@@ -4,19 +4,20 @@ import './App.css' //para importar el estilo
 interface Task { //se define la estructura de un objeto task, que tiene dos propiedades, text e isCompleted
   text: string;
   isCompleted: boolean;
+  id: number;
 }
 
 function App() { 
   const [taskText, setTaskText] = useState(''); //el estado inicial de taskText es un string vacío
   const [tasks, setTasks] = useState<Task[]>([  //l estado inicial de la lista de tareas es un array con 3 tareas
-    {text: 'Tarea 1', isCompleted: false},
-    {text: 'Tarea 2', isCompleted: true},
-    {text: 'Tarea 3', isCompleted: true}
+    {text: 'Tarea 1', isCompleted: false, id: Math.random()},
+    {text: 'Tarea 2', isCompleted: true, id: Math.random()}, 
+    {text: 'Tarea 3', isCompleted: true, id: Math.random()}
   ]);
 
   //función que se ejecutará al presionar el botón en "añadir tarea"
 const handleAddTask = () => { //esta función usa setTask para añadir una nueva tarea, que se compoondrá del array inicial mas lo que sea task text y false
-  setTasks([...tasks, {text: taskText, isCompleted: false}]);
+  setTasks([...tasks, {text: taskText, isCompleted: false, id: Math.random()}]);
   setTaskText(''); //una vez realizado se vuelve a setear setTaskText como un string vacío
 }
 
@@ -29,10 +30,16 @@ const handleDeleteTask = (index: number) =>{ //filtramos el array para eliminar 
 };
 
 //la tarea correcta se actualiza porque el index pasado al onChange le dice a handleCheckboxChange cuál tarea debe cambiar, y luego la comparación i === index en el map() se asegura de modificar solo esa tarea.
-const handleCheckboxChange = (index: number) =>{ // i === index se encarga de que se cambie la tarea correcta en el array de tareas
-  const updatedTasks = tasks.map((task, i) => i === index ? {...task, isCompleted: !task.isCompleted} : task) //si i es igual al index, se cambia el valor booleano de la tarea completada, si no se deja igual
-  setTasks(updatedTasks); //se pasa el índice de la tarea que está cambiando, con la cual hemos interactuado
-                          //cuando index coincide con i, cambia esa tarea por completada o no completada según su estado inicial
+const handleCheckboxChange = (taskId: number) =>{ // i === index se encarga de que se cambie la tarea correcta en el array de tareas
+  const updatedTasks = tasks.map(task => {
+    if (task.id === taskId){
+      return {
+        ...task, isCompleted: !task.isCompleted
+      };
+    }
+    return task;
+  });
+  setTasks(updatedTasks);
 };
 
 console.log(taskText);
@@ -51,7 +58,7 @@ console.log(taskText);
           <div className='task' key={index}> 
             <div>
               {/* el index que le pasamos a handleCheckboxChange proviene del .map(), cuando se pasa el index a handleCheckboxChange, se pasa la posición de la tarea dentro del array. */}
-              <input type='checkbox' checked={task.isCompleted} onChange={()=>handleCheckboxChange(index)}/>
+              <input type='checkbox' checked={task.isCompleted} onChange={()=>handleCheckboxChange(task.id)}/>
               <span style={{ textDecoration: task.isCompleted ? 'line-through' : 'none' }}>{task.text}</span>
             </div>
             <button onClick ={() => handleDeleteTask(index)}>Eliminar</button>
