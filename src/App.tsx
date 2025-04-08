@@ -1,5 +1,6 @@
 import { useState } from 'react' //para importar el hook useState
 import './App.css' //para importar el estilo
+import { AddTask } from './AddTask';
 
 interface Task { //se define la estructura de un objeto task, que tiene dos propiedades, text e isCompleted
   text: string;
@@ -8,23 +9,12 @@ interface Task { //se define la estructura de un objeto task, que tiene dos prop
 }
 
 function App() { 
-  const [taskText, setTaskText] = useState(''); //el estado inicial de taskText es un string vacío
   const [isOnlyPending, setIsOnlyPending] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([  //l estado inicial de la lista de tareas es un array con 3 tareas
     {text: 'Tarea 1', isCompleted: false, id: Math.random()},
     {text: 'Tarea 2', isCompleted: true, id: Math.random()}, 
     {text: 'Tarea 3', isCompleted: true, id: Math.random()}
   ]);
-
-  //función que se ejecutará al presionar el botón en "añadir tarea"
-const handleAddTask = () => { //esta función usa setTask para añadir una nueva tarea, que se compoondrá del array inicial mas lo que sea task text y false
-  setTasks([...tasks, {text: taskText, isCompleted: false, id: Math.random()}]);
-  setTaskText(''); //una vez realizado se vuelve a setear setTaskText como un string vacío
-}
-
-const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-  setTaskText(event.target.value); //event.target.value obtiene el valor del input y lo actualiza en taskText con setTaskText(event.target.value).
-};
 
 const handleDeleteTask = (index: number) =>{ //filtramos el array para eliminar la tarea en lugar de ocultarla
   setTasks(tasks.filter((_, i) => i !== index)); //como no necesitas el valor de la tarea (solo necesitas el índice), usamos _ para señalar que el valor del elemento no se va a utilizar en esa función
@@ -43,7 +33,6 @@ const handleCheckboxChange = (taskId: number) =>{ // i === index se encarga de q
   setTasks(updatedTasks);
 };
 
-console.log(taskText);
 
 //implementar currentTask y su función de deleteTask
 /* const deleteTask = (taskId: number) => {
@@ -56,6 +45,10 @@ console.log(taskText);
     setIsOnlyPending(!isOnlyPending);
   };
 
+  const addTask = (task: Task) => {
+    setTasks([task, ...tasks]);
+  };
+
   const filteredTasks = isOnlyPending
     ? tasks.filter((task) => {
       return !task.isCompleted;
@@ -65,10 +58,7 @@ console.log(taskText);
   return (
     <>
       <h1>ToDo List 🖋</h1>
-      <div className="add-task">
-        <input type='text' onInput={handleInput} value={taskText}/>
-        <button className='add-task-button'onClick={handleAddTask} disabled={taskText.length < 4}>Añadir tarea</button>
-      </div>
+      <AddTask addTask={addTask}/>
       <div className='filters'>
         <button className={isOnlyPending ? `filters__btn--selcted` : ''} onClick={handleIsOnlyPendingClick}>
           Show only pending
