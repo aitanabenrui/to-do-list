@@ -9,6 +9,7 @@ interface Task { //se define la estructura de un objeto task, que tiene dos prop
 
 function App() { 
   const [taskText, setTaskText] = useState(''); //el estado inicial de taskText es un string vacío
+  const [isOnlyPending, setIsOnlyPending] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([  //l estado inicial de la lista de tareas es un array con 3 tareas
     {text: 'Tarea 1', isCompleted: false, id: Math.random()},
     {text: 'Tarea 2', isCompleted: true, id: Math.random()}, 
@@ -51,6 +52,16 @@ console.log(taskText);
   })
 } */
 
+  const handleIsOnlyPendingClick = () => {
+    setIsOnlyPending(!isOnlyPending);
+  };
+
+  const filteredTasks = isOnlyPending
+    ? tasks.filter((task) => {
+      return !task.isCompleted;
+    })
+    : tasks;
+
   return (
     <>
       <h1>ToDo List 🖋</h1>
@@ -58,8 +69,13 @@ console.log(taskText);
         <input type='text' onInput={handleInput} value={taskText}/>
         <button className='add-task-button'onClick={handleAddTask} disabled={taskText.length < 4}>Añadir tarea</button>
       </div>
+      <div className='filters'>
+        <button className={isOnlyPending ? `filters__btn--selcted` : ''} onClick={handleIsOnlyPendingClick}>
+          Show only pending
+        </button>
+      </div>
       <div className='task-list'>
-        {tasks.map((task, index) => { 
+        {!filteredTasks.map((task, index) => { //repasar esta linea y ver si funciona bien
           // El filter recorre el array tasks y devuelve un nuevo array con solo las tareas donde showTask === true.
           return (
           <div className='task' key={index}> 
