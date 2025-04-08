@@ -44,6 +44,13 @@ const handleCheckboxChange = (taskId: number) =>{ // i === index se encarga de q
 
 console.log(taskText);
 
+//implementar currentTask y su función de deleteTask
+/* const deleteTask = (taskId: number) => {
+  setTasks(currentTasks => {
+    return currentTasks
+  })
+} */
+
   return (
     <>
       <h1>ToDo List 🖋</h1>
