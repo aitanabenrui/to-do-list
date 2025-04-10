@@ -1,6 +1,12 @@
-import { useState } from 'react' //para importar el hook useState
+import { useEffect, useState, useMemo } from 'react' //para importar el hook useState
 import './App.css' //para importar el estilo
 import { AddTask } from './AddTask';
+
+interface AddTaskProps {
+  addTask: (task: Task) => void;
+  taskText: string;
+  setTaskText: (value: string) => void;
+}
 
 interface Task { //se define la estructura de un objeto task, que tiene dos propiedades, text e isCompleted
   text: string;
@@ -9,12 +15,23 @@ interface Task { //se define la estructura de un objeto task, que tiene dos prop
 }
 
 function App() { 
+  const [taskText, setTaskText] = useState('');
   const [isOnlyPending, setIsOnlyPending] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([  //l estado inicial de la lista de tareas es un array con 3 tareas
     {text: 'Tarea 1', isCompleted: false, id: Math.random()},
     {text: 'Tarea 2', isCompleted: true, id: Math.random()}, 
     {text: 'Tarea 3', isCompleted: true, id: Math.random()}
   ]);
+
+  console.log(setTaskText);
+
+  const miObjeto = useMemo(() => {
+    return {taskText};
+  }, []);
+
+  useEffect(() => {
+    console.log('holi', miObjeto);
+  }, [miObjeto])
 
 const handleDeleteTask = (index: number) =>{ //filtramos el array para eliminar la tarea en lugar de ocultarla
   setTasks(tasks.filter((_, i) => i !== index)); //como no necesitas el valor de la tarea (solo necesitas el índice), usamos _ para señalar que el valor del elemento no se va a utilizar en esa función
@@ -49,11 +66,13 @@ const handleCheckboxChange = (taskId: number) =>{ // i === index se encarga de q
     setTasks([task, ...tasks]);
   };
 
-  const filteredTasks = isOnlyPending
+  const filteredTasks = useMemo(() => {
+    return isOnlyPending
     ? tasks.filter((task) => {
       return !task.isCompleted;
     })
     : tasks;
+  }, [isOnlyPending, tasks]);
 
   return (
     <>
