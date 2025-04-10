@@ -65,7 +65,7 @@ const handleCheckboxChange = (taskId: number) =>{ // i === index se encarga de q
         </button>
       </div>
       <div className='task-list'>
-        {!filteredTasks.map((task, index) => { //repasar esta linea y ver si funciona bien
+        {filteredTasks.map((task, index) => { //repasar esta linea y ver si funciona bien
           // El filter recorre el array tasks y devuelve un nuevo array con solo las tareas donde showTask === true.
           return (
           <div className='task' key={index}> 
