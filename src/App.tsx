@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react' //para importar el hook useState
+import { useState, useMemo } from 'react' //para importar el hook useState
 import './App.css' //para importar el estilo
 import { AddTask } from './AddTask';
 import { Task } from './task.models';
@@ -22,13 +22,16 @@ function App() {
 
   console.log(setTaskText);
 
-  const miObjeto = useMemo(() => {
+  //Este hook se usa para memorizar un valor y evitar que se vuelva a calcular en cada render, a menos que cambien las dependencias.
+/*   const miObjeto = useMemo(() => {
     return {taskText};
   }, []);
 
+  //este useEffect solo se ejecutará cuando cambie "miObjeto" pro como est viene dentro de un useMemo con dependecias vacías,
+  //este useEffect se ejecutará una sola vez, justo después de montar el componente.
   useEffect(() => {
     console.log('holi', miObjeto);
-  }, [miObjeto])
+  }, [miObjeto]) */
 
 const handleDeleteTask = (index: number) =>{ //filtramos el array para eliminar la tarea en lugar de ocultarla
   setTasks(tasks.filter((_, i) => i !== index)); //como no necesitas el valor de la tarea (solo necesitas el índice), usamos _ para señalar que el valor del elemento no se va a utilizar en esa función
