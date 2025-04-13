@@ -63,14 +63,13 @@ const handleCheckboxChange = (taskId: number) =>{ // i === index se encarga de q
     setTasks([task, ...tasks]);
   };
 
-  const filteredTasks = useMemo(() => {
+  const filteredTasks = useMemo(() => { //uevitar que React recalcule filteredTasks en cada renderizado, a menos que cambie el valor de isOnlyPending o tasks.
     return isOnlyPending
     ? tasks.filter((task) => {
       return !task.isCompleted;
     })
     : tasks;
-  }, [isOnlyPending, tasks]);
-
+  }, [isOnlyPending, tasks]); //Solo vuelve a ejecutar la función si alguno de los valores en el array de dependencias ([isOnlyPending, tasks]) ha cambiado.
   return (
     <>
       <h1>ToDo List 🖋</h1>
