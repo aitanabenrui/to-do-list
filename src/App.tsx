@@ -74,7 +74,7 @@ const handleCheckboxChange = (taskId: number) =>{ // i === index se encarga de q
   return (
     <>
       <h1>ToDo List 🖋</h1>
-      <AddTask addTask={addTask}/>
+      <AddTask addTask={addTask} taskText={taskText} setTaskText={setTaskText} />
       <div className='filters'>
         <button className={isOnlyPending ? `filters__btn--selcted` : ''} onClick={handleIsOnlyPendingClick}>
           Show only pending

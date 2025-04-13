@@ -1,13 +1,14 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent } from 'react';
 import { Task } from './task.models';
 
 interface AddTaskProps {
   addTask: (task: Task) => void;
+  taskText: string;
+  setTaskText: (value: string) => void;
 }
 
 export const AddTask = (props: AddTaskProps) => {
-  const [taskText, setTaskText] = useState('');
-  const { addTask } = props;
+  const { addTask, taskText, setTaskText } = props;
 
   const handleAddTask = () => {
     addTask({ text: taskText, isCompleted: false, id: Math.random() });
