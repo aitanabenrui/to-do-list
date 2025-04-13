@@ -1,18 +1,15 @@
 import { useEffect, useState, useMemo } from 'react' //para importar el hook useState
 import './App.css' //para importar el estilo
 import { AddTask } from './AddTask';
+import { Task } from './task.models';
 
-interface AddTaskProps {
-  addTask: (task: Task) => void;
-  taskText: string;
-  setTaskText: (value: string) => void;
-}
 
-interface Task { //se define la estructura de un objeto task, que tiene dos propiedades, text e isCompleted
+//ya importada del fichero task.models
+/* interface Task { //se define la estructura de un objeto task, que tiene dos propiedades, text e isCompleted
   text: string;
   isCompleted: boolean;
   id: number;
-}
+} */
 
 function App() { 
   const [taskText, setTaskText] = useState('');
